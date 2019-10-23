@@ -390,8 +390,25 @@ var getEmpWithFixSalary = function() {
    })
    return collection
  }
-db.Employees.aggregate([
-  { $match: {} },
-  { $group: { _id : "_id", MonthlyFee: "$MonthlyFee", FName: "$FName", LName : "$LName", Salary : "$Salary" } },
-  { $sort: {  } }
-])
+// 9
+var getEmplsWithMinSalary = function () {    
+  collection = []
+  var departments = db.Departments.distinct('name', {}, {});
+  departments.forEach(function (element) {
+    collection.push(db.Employees.find().aggregate({ $match: {Department :element }},
+     { $group: { _id : null, Salary : { $sum: "$incoming"}}}))
+  }); 
+  collection.sort({ Salary: 1 }).limit(1)
+  return collection
+}
+//10
+var getEmplsWithMinSalaryByDep = function () {    
+  collection = []
+  var departments = db.Departments.distinct('name', {}, {});
+  departments.forEach(function (element) {
+    collection.push(db.Employees.aggregate({ $match: {Department :element }},
+     { $group: { _id : null, Salary : { $sum: "$incoming"}}}))
+  }); 
+  collection.find().sort({ salary: -1 })
+  return collection
+}
