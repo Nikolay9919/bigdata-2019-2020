@@ -62,12 +62,6 @@ for(i = 0; i < 4; i++) {
 
 //4
 
-
-var getVehiclesWithCargo = function () {    
-  collection = []
-  var vehicles = db.Vehicles.find({});
-  vehicles.forEach(function (element) {
-    collection.push(db.cargo.aggregate([{ $match: {vehicleId :element._id }}]).pretty() )
-  }); 
- return collection
-}
+db.Vehicles.find().forEach(function (document) {
+  return db.cargo.find({ vehicleId  : document._id }).pretty();
+})
