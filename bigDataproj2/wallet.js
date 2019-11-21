@@ -22,7 +22,9 @@ var getWallet = function() {
         if(err) {
             alert(err)
         } else {
-            return JSON.parse(jsonString)
+            const wallet = JSON.parse(jsonString)
+            console.log(wallet.walletId)
+            return wallet.walletId
         }
     })
 }
